@@ -1,49 +1,214 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# RoomIt – Meeting Room Booking System
 
-## Getting Started
+## Overview
 
-First, run the development server:
+RoomIt is a full-stack meeting room booking application built using Next.js, Express.js, and MongoDB. The system allows employees to view room availability, create bookings, manage existing bookings, and cancel or reschedule reservations.
+
+The application is designed to prevent booking conflicts and provide a smooth room reservation experience.
+
+---
+
+## Features
+
+### Room Listing
+
+* View all available meeting rooms
+* Display room capacity and location details
+
+### Room Availability
+
+* Check room availability by date
+* 30-minute slot-based scheduling
+* Availability refreshes automatically after booking actions
+* Green slots indicate available time slots
+* Red slots indicate booked or unavailable slots
+
+### Create Booking
+
+Users can:
+
+* Enter name and email
+* Add meeting title
+* Select booking date
+* Choose start and end time
+* Book multiple consecutive slots
+
+### My Bookings
+
+* Search bookings using email address
+* View all existing bookings
+* Track booking status
+
+### Cancel Booking
+
+* Cancel existing reservations
+* Booking status updates automatically
+* Cancelled bookings immediately free their reserved slots
+
+### Reschedule Booking
+
+Users can:
+
+* Change booking date
+* Modify start time
+* Modify end time
+* Revalidate availability before confirming changes
+
+### Buffer Time Support
+
+* Buffer slots are automatically blocked after bookings
+* Prevents immediate back-to-back room usage
+* Buffer slots are automatically reserved and appear unavailable for booking.
+
+## Double Booking Prevention
+
+The system prevents multiple users from booking the same room slot.
+A unique compound index is used on:RoomId + date + slotStart
+This guarantees that overlapping bookings cannot be created even when multiple requests arrive simultaneously.
+
+
+### Refund Window Support
+
+Bookings cancelled within the refund window are marked:
+- cancelled-refundable
+Bookings cancelled after the refund window are marked:
+- cancelled-non-refundable
+
+  
+## Tech Stack
+### Frontend
+
+* Next.js (App Router)
+* React.js
+* Tailwind CSS
+
+### Backend
+* Express.js
+* Node.js
+
+### Database
+* MongoDB Atlas
+
+## Environment Variables
+
+Create a `.env.local` file inside the frontend project root:
+
+```env
+NEXT_PUBLIC_API_URL=https://roomit-backend-yk2h.onrender.com/api/rooms
+```
+
+
+## API Base URL
+
+Backend API:
+https://roomit-backend-yk2h.onrender.com/api/rooms
+https://roomit-backend-yk2h.onrender.com/api/seed
+https://roomit-backend-yk2h.onrender.com/api/bookings
+
+Backend Health Check:
+https://roomit-backend-yk2h.onrender.com/
+
+Rooms Endpoint:
+https://roomit-backend-yk2h.onrender.com/api/rooms
+
+
+## Installation
+Clone the repository:
+
+```bash
+https://github.com/RekhaSingh1604/roomit-frontend.git
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Application runs at:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## Application Pages
 
-To learn more about Next.js, take a look at the following resources:
+### Home Page
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Route:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-
-
-
-Pages
-
+```bash
 /
-Room Listing
+```
 
-/rooms/[id]
-Room Availability + Booking
+Displays all available meeting rooms.
 
+### Room Details
+
+
+Features:
+
+* Room availability view
+* Booking form
+* Slot selection
+* Real-time updates
+
+### My Bookings
+
+Route:
+
+```bash
 /bookings
-Search, Cancel, Reschedule Bookings
+```
+
+Features:
+
+* Search bookings by email
+* Cancel bookings
+* Reschedule bookings
+* View booking status
+
+---
+
+## Deployment
+
+### Frontend
+
+Deployed on Vercel:https://roomit-frontend-2wtv.vercel.app/
+
+### Backend
+
+Deployed on Render: https://roomit-backend-yk2h.onrender.com
+
+### Database
+MongoDB Atlas
+
+
+## Implemented Extended Features
+
+### Section 4.3 – Buffer Time Between Bookings
+
+* Automatically blocks buffer slots after bookings
+* Prevents overlapping usage during cleanup periods
+
+### Section 4.4 – Reschedule with Re-validation
+
+* Allows users to modify booking schedules
+* Re-checks slot availability before updating booking
+
+---
+
+## Future Improvements
+
+* Email notifications for booking confirmations
+* Calendar integration
+* User authentication and role management
+* Advanced room filtering and search
